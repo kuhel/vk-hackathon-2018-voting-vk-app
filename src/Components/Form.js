@@ -67,7 +67,7 @@ class Form extends React.Component {
 						<List>
 							<ListItem>
 								<header onClick={() => this.onClick(team)} className='Team__header'>
-									<h3>Team #{team.id} — {team.name}</h3>
+									<h3>#{team.id} {team.name}</h3>
 									<button className={this.state.visibility[team.id] ? 'on' : ''}>
 										<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M24 16l-12 12 2.83 2.83 9.17-9.17 9.17 9.17 2.83-2.83z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
 									</button>

@@ -21,27 +21,31 @@ div#root {
 h3,
 h4,
 h5 {
-  margin-left: 26px;
-  margin-right: 26px;
+  /* margin-left: 26px; */
+  /* margin-right: 26px; */
+  margin-left: 12px;
+  margin-right: 12px;
+  max-width: 100%;
+  white-space: initial;
 }
 
 h5 {
   margin-bottom: 0;
   margin-top: 0;
+  font-weight: 500;
+  color: rgba(0,0,0,.7);
 }
 
 h4 {
   margin-top: 0;
+  color: rgba(0,0,0,.5);
 }
 
 h3 {
   display: flex;
   cursor: pointer;
   flex-grow: 2;
-}
-
-.Button {
-  margin-left: 26px;
+  font-size: 16px;
 }
 
 
@@ -64,7 +68,7 @@ h3 {
   display: flex;
   font-size: 0;
   border: none;
-  background-color: none;
+  background-color: transparent;
   cursor: pointer;
   will-change: transform;
   transition: transform .3s ease;
@@ -75,11 +79,12 @@ h3 {
 .Team__header > button svg {
   border-radius: 50%;
   fill: rgba(0, 0, 0, .34);
+  transition: fill .3s ease;
 }
 
 .Team__header > button:hover svg,
 .Team__header > button:active svg {
-  background-color: rgba(0, 0, 0, .04);
+  fill: rgba(0, 0, 0, .54);
 }
 
 .Team__header > .on {
@@ -92,4 +97,12 @@ h3 {
 
 .vote-buttons {
   display: flex;
+}
+
+.Button {
+  margin-left: 0;
+}
+
+.Button + .Button {
+  margin-left: 26px;
 }

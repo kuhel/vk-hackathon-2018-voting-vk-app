@@ -17,8 +17,8 @@ class App extends React.Component {
 			activePanel: ~ROUTES.indexOf(location) ? location : 'home',
 			submitedTeams: [],
 			deleteEnabled: false,
-			isVoteStarted: true,
-			isVoteFinished: false,
+			// isVoteStarted: true,
+			// isVoteFinished: false,
 		};
 	}
 
