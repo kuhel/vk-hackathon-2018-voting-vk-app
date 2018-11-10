@@ -66,9 +66,9 @@ class Form extends React.Component {
 					<Group key={teamIndex} className={team.isSubmited ? 'disabled--opacity' : ''}>
 						<List>
 							<ListItem>
-								<header className='Team__header'>
-									<h3 onClick={() => this.onClick(team)}>Team #{team.id} — {team.name}</h3>
-									<button className={this.state.visibility[team.id] ? 'on' : ''} onClick={() => this.onClick(team)}>
+								<header onClick={() => this.onClick(team)} className='Team__header'>
+									<h3>Team #{team.id} — {team.name}</h3>
+									<button className={this.state.visibility[team.id] ? 'on' : ''}>
 										<svg height="32" viewBox="0 0 48 48" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M24 16l-12 12 2.83 2.83 9.17-9.17 9.17 9.17 2.83-2.83z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>
 									</button>
 								</header>
@@ -97,7 +97,7 @@ class Form extends React.Component {
 							</ListItem>
 						</List>
 						{this.state.visibility[team.id] ? <Div className={`vote-buttons ${team.isSubmited && !this.state.deleteEnabled ? 'disabled' : ''}`}>
-							<Button size='l' stretched onClick={() => props.submitMarks(team.id)}>Отправить</Button>
+							<Button className={this.state.visibility[team.id] ? '' : 'disabled'} size='l' stretched onClick={() => props.submitMarks(team.id)}>Отправить</Button>
 							{this.state.deleteEnabled && <Button size='l' stretched onClick={() => props.deleteMarks(team.id)} level='outline'>Удалить</Button>}
 							<div style={{paddingBottom: '20px'}}></div>
 						</Div> : null}

@@ -17,8 +17,8 @@ class App extends React.Component {
 			activePanel: ~ROUTES.indexOf(location) ? location : 'home',
 			submitedTeams: [],
 			deleteEnabled: false,
-			// isVoteStarted: true,
-			// isVoteFinished: false,
+			isVoteStarted: true,
+			isVoteFinished: false,
 		};
 	}
 
@@ -62,15 +62,20 @@ class App extends React.Component {
 							})
 						}
 						if (e.detail.data.request_id === '777c') {
-							const id = e.detail.data.response.team_id;
-							if (id) {
-								this.setSubmitedTeam(id);
+							if (e.detail.data.response.status) {
+								const id = e.detail.data.response.team_id;
+								if (id) {
+									this.setSubmitedTeam(id);
+								}
 							}
+							
 						}
 						if (e.detail.data.request_id === '999a') {
-							const id = e.detail.data.response.team_id;
-							if (id) {
-								this.deleteSubmitedTeam(id);
+							if (e.detail.data.response.status) {
+								const id = e.detail.data.response.team_id;
+								if (id) {
+									this.deleteSubmitedTeam(id);
+								}
 							}
 						}
 						break;
