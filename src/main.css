@@ -1,0 +1,81 @@
+:root {
+	/* fonts */
+	--font-ios: -apple-system, Helvetica Neue, Arial;
+	--font-android: Roboto, Arial;
+	--font-common: -apple-system, Roboto, Helvetica Neue, Arial;
+}
+
+html,
+body,
+div#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  font-family: var(--font-common);
+}
+
+h3,
+h4,
+h5 {
+  margin-left: 26px;
+  margin-right: 26px;
+}
+
+h5 {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+h4 {
+  margin-top: 0;
+}
+
+h3 {
+  display: flex;
+  cursor: pointer;
+  flex-grow: 2;
+}
+
+.Button {
+  margin-left: 26px;
+}
+
+
+.disabled {
+  pointer-events: none;
+}
+
+.disabled--opacity {
+  opacity: 0.4;
+}
+
+.Team__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Team__header > button {
+  display: flex;
+  font-size: 0;
+  border: none;
+  background-color: none;
+  cursor: pointer;
+  will-change: transform;
+  transition: transform .3s ease;
+  transform: rotate(180deg);
+  outline: none;
+}
+
+.Team__header > button:hover,
+.Team__header > button:active {
+  background-color: rgba(0, 0, 0, .1);
+}
+
+.Team__header > .on {
+  transform: rotate(0deg);
+}
