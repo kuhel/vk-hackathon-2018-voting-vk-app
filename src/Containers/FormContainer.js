@@ -21,6 +21,15 @@ class FormContainer extends React.Component {
 		}
 	}
 
+	deleteMarks = (id) => {
+		const marks = this.state.marks.forEach(mark => {
+			if (mark.id === id) {
+				// mark.marks = [1, 1, 1, 1, 1, 1, 1];
+				this.props.deleteMark(mark);
+			}
+		});
+	}
+
 	componentDidMount() {
 		this.setState({
 			marks: this.props.marks,
@@ -53,17 +62,38 @@ class FormContainer extends React.Component {
 		this.setState({ marks: teams });
 	}
 
+	renderScreen() {
+		const props = this.props;
+		if (props.isVoteFinished) {
+			return <Div className='map'>
+			<h2 style={{textAlign: 'center'}}>Голосование окончено</h2>
+		</Div>
+		}
+
+		if (!props.isVoteStarted) {
+			return <Div className='map'>
+			<h2 style={{textAlign: 'center'}}>Голосование скоро начнется</h2>
+		</Div>
+		}
+
+		return (
+			<Div>
+				<Div className='map'>
+					<h2 style={{textAlign: 'center'}}>Teams</h2>
+				</Div>
+
+				{this.state.marks && <Form deleteEnabled={props.deleteEnabled} teams={props.teams} marks={this.state.marks} visibility={this.initialVisibility(props.teams)} setMark={this.setMark} submitMarks={this.submitMarks} deleteMarks={this.deleteMarks} />}
+			</Div>
+		);
+	}
+
 	render() {
 		const props = this.props;
 		return (
 			<Panel id={props.id}>
 				<PanelHeader>Art of coding voting 2018</PanelHeader>
 
-				<Div className='map'>
-					<h2>Teams</h2>
-				</Div>
-
-				{this.state.marks && <Form teams={props.teams} marks={this.state.marks} visibility={this.initialVisibility(props.teams)} setMark={this.setMark} submitMarks={this.submitMarks} />}
+				{this.renderScreen()}
 			</Panel>
 		);
 	}

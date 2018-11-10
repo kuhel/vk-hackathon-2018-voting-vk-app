@@ -9,7 +9,7 @@ class Home extends React.Component {
 
 	render() {
 		const props = this.props;
-		return props.marks ? <FormContainer teams={props.teams} marks={props.marks} id={props.id} addMark={props.addMark} /> : '';
+		return props.marks ? <FormContainer isVoteFinished={props.isVoteFinished} isVoteStarted={props.isVoteStarted} deleteEnabled={props.deleteEnabled} teams={props.teams} marks={props.marks} id={props.id} addMark={props.addMark} deleteMark={props.deleteMark} /> : '';
 	}
 }
 

@@ -71,11 +71,24 @@ h3 {
   outline: none;
 }
 
-.Team__header > button:hover,
-.Team__header > button:active {
-  background-color: rgba(0, 0, 0, .1);
+.Team__header > button svg {
+  border-radius: 50%;
+  fill: rgba(0, 0, 0, .34);
+}
+
+.Team__header > button:hover svg,
+.Team__header > button:active svg {
+  background-color: rgba(0, 0, 0, .04);
 }
 
 .Team__header > .on {
   transform: rotate(0deg);
+}
+
+.Cell__main {
+  padding: 0 !important;
+}
+
+.vote-buttons {
+  display: flex;
 }

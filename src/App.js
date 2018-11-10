@@ -2,6 +2,8 @@ import React from 'react';
 import connect from '@vkontakte/vkui-connect';
 import { View } from '@vkontakte/vkui';
 import Home from './Panels/Home';
+import Start from './Panels/Start';
+import Finish from './Panels/Finish';
 import { ROUTES } from './config';
 import '@vkontakte/vkui/dist/vkui.css';
 
@@ -13,7 +15,10 @@ class App extends React.Component {
 
 		this.state = {
 			activePanel: ~ROUTES.indexOf(location) ? location : 'home',
-			submittedTeams: [],
+			submitedTeams: [],
+			deleteEnabled: false,
+			// isVoteStarted: true,
+			// isVoteFinished: false,
 		};
 	}
 
@@ -29,24 +34,43 @@ class App extends React.Component {
 						break;
 					case 'VKWebAppCallAPIMethodResult':
 						if (e.detail.data.request_id === '34bc') {
+							let state = {};
+							if (e.detail.data.response.hasOwnProperty('is_delete_enabled')) {
+								state.deleteEnabled = e.detail.data.response.is_delete_enabled;
+							}
+							if (e.detail.data.response.hasOwnProperty('is_vote_start')) {
+								state.isVoteStarted = e.detail.data.response.is_vote_start;
+							}
+							if (e.detail.data.response.hasOwnProperty('is_vote_finish')) {
+								state.isVoteFinished = e.detail.data.response.is_vote_finish;
+							}
 							if (e.detail.data.response.items.length > 0) {
 								const teams = e.detail.data.response.items.map(team => {
 									if (team.marks) {
-										this.setSubmittedTeam(team.id);
+										this.setSubmitedTeam(team.id);
 									}
 									return {
 										...team,
-										marks: team.marks ? team.marks : [0, 1, 2, 0, 1, 2, 0],
+										marks: team.marks ? team.marks : [1, 1, 1, 1, 1, 1, 1],
 										isSubmited: team.marks ? true : false
 									};
 								}).sort((a, b) => a.isSubmited - b.isSubmited);
-								this.setState({ teams });
+								state.teams = teams;
 							}
+							this.setState({
+								...state,
+							})
 						}
 						if (e.detail.data.request_id === '777c') {
 							const id = e.detail.data.response.team_id;
 							if (id) {
-								this.setSubmittedTeam(id);
+								this.setSubmitedTeam(id);
+							}
+						}
+						if (e.detail.data.request_id === '999a') {
+							const id = e.detail.data.response.team_id;
+							if (id) {
+								this.deleteSubmitedTeam(id);
 							}
 						}
 						break;
@@ -85,21 +109,38 @@ class App extends React.Component {
 		this.getToken();
 	}
 
-	setSubmittedTeam(id) {
-		let teams = this.state.submittedTeams;
+	setSubmitedTeam(id) {
+		let teams = this.state.submitedTeams;
 		if (!~teams.indexOf(id)) {
 			teams.push(id);
 		}
 		this.setState({
-			submittedTeams: teams
+			submitedTeams: teams
 		});
 	}
 
-	setMarksSubmitted(id) {
+	deleteSubmitedTeam(id) {
+		let teams = this.state.submitedTeams;
+		let _teams = this.state.teams.map(team => {
+			if (team.id === id) {
+				team.isSubmited = false
+			}
+			return team;
+		});
+		if (~teams.indexOf(id)) {
+			teams.splice(teams.indexOf(id), 1);
+		}
+		this.setState({
+			submitedTeams: teams,
+			teams: _teams,
+		});
+	}
+
+	setMarksSubmited(id) {
 		const teams = [...this.state.marks];
 		teams.map((team) => {
 			if (team.id === id) {
-				team.isSubmitted = true;
+				team.isSubmited = true;
 			}
 		});
 		this.setState({ marks: teams });
@@ -141,10 +182,23 @@ class App extends React.Component {
 			}
 		});
 	}
+
+	deleteMark = (team) => {
+		connect.send("VKWebAppCallAPIMethod", {
+			'method': "hackathon.delMark",
+			'request_id': '999a',
+			'params': {
+				'access_token': this.state.token,
+				'v': '5.87',
+				team_id: team.id,
+			}
+		});
+	}
+
 	mergeSubmitInfo(teams) {
 		if (teams) {
 			return teams.map(team => {
-				if (~this.state.submittedTeams.indexOf(team.id) && !team.isSubmited) {
+				if (~this.state.submitedTeams.indexOf(team.id) && !team.isSubmited) {
 					team.isSubmited = true;
 				}
 				return team;
@@ -171,7 +225,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<View activePanel={this.state.activePanel}>
-				<Home id="home" submittedTeams={this.state.submittedTeams} go={this.go} teams={this.mergeSubmitInfo(this.state.teams)} marks={this.marksStructure(this.state.teams)} addMark={this.addMark} />
+				<Home id='home' isVoteFinished={this.state.isVoteFinished} isVoteStarted={this.state.isVoteStarted} deleteEnabled={this.state.deleteEnabled} submitedTeams={this.state.submitedTeams} go={this.go} teams={this.mergeSubmitInfo(this.state.teams)} marks={this.marksStructure(this.state.teams)} addMark={this.addMark} deleteMark={this.deleteMark} />
 			</View>
 		);
 	}
